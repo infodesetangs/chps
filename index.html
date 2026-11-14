@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="fr">
 <head>
@@ -6,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#080e1d">
 <meta name="description" content="Edison AI Control : caméra, vision IA, messagerie Ably et contrôle virtuel en temps réel.">
-<title>Edison AI Control · V6 — Salons</title>
+<title>Edison AI Control · V7 — Caméra corrigée</title>
 <style>
 :root{color-scheme:dark;--bg:#070c19;--panel:#121b30;--line:#2b3a58;--muted:#93a5c4;--text:#f4f7ff;--blue:#647cff;--cyan:#52ebd5;--orange:#ffbf71;--red:#ff6c85}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--text);background:radial-gradient(ellipse 800px 380px at 65% -100px,#263c81 0%,transparent 72%),var(--bg);font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:14px;line-height:1.5}
@@ -14,18 +13,18 @@ button,input,select{font:inherit}button{cursor:pointer;touch-action:manipulation
 .shell{max-width:1140px;margin:0 auto;padding:20px 22px 60px}.head{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:22px}.identity{display:flex;gap:14px;align-items:center}.logo{height:57px;width:57px;border-radius:19px;display:grid;place-items:center;font-size:32px;background:linear-gradient(140deg,#4157b9,#223158);border:1px solid #5a6fcd;box-shadow:0 10px 32px #0308176b}.eyebrow{text-transform:uppercase;letter-spacing:2.3px;color:#9cafef;font-size:10px;font-weight:800}h1{font-size:24px;letter-spacing:-.7px;line-height:1.15;margin:2px 0}h2{font-size:16px;letter-spacing:-.25px;margin:0}.sub{color:var(--muted);font-size:12px}.live{display:flex;align-items:center;gap:8px;border-radius:28px;padding:10px 14px;border:1px solid var(--line);background:#162039;color:#c6d1e8;font-size:12px;font-weight:700;white-space:nowrap}.live-dot{width:9px;height:9px;border-radius:100%;background:#8c96ab}.live.connected .live-dot{background:var(--cyan);box-shadow:0 0 14px var(--cyan)}.live.connecting .live-dot{background:var(--orange);box-shadow:0 0 12px #ffbf7180}.live.error .live-dot{background:var(--red)}
 .hero{background:linear-gradient(110deg,#1d2a50,#192244 56%,#11223a);border:1px solid #354b80;border-radius:24px;padding:22px 24px;margin-bottom:17px;display:flex;justify-content:space-between;align-items:center;gap:18px}.hero b{font-size:21px;letter-spacing:-.5px}.hero p{color:#b9c8e4;font-size:13px;margin:6px 0 0;max-width:620px}.hero .chip{font-size:11px;color:#72efd8;background:#0b3737;border:1px solid #2a746c;border-radius:20px;padding:7px 10px;white-space:nowrap}
 .layout{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:15px}.panel{background:linear-gradient(160deg,#141f36,#0f182c);border:1px solid var(--line);border-radius:21px;padding:19px;min-width:0;box-shadow:0 14px 42px #02050f30}.span2{grid-column:1 / -1}.bar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:15px}.small-title{font-size:11px;letter-spacing:.15em;font-weight:850;color:#7f97c2}.label{display:block;color:#b5c3e0;font-weight:750;font-size:12px;margin:0 0 6px}.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}input,select{width:100%;border-radius:12px;background:#091124;border:1px solid #354767;padding:12px;color:#f3f6ff;min-width:0}input::placeholder{color:#7182a6}input:focus{border-color:#778aff;outline:0;box-shadow:0 0 0 3px #647cff30}.actions{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-top:14px}button{border-radius:12px;padding:11px 14px;border:1px solid #425477;color:#e9efff;background:#26334f;font-weight:750}button.primary{background:linear-gradient(120deg,#6679ff,#5268df);border-color:#8293ff;color:white}button.green{background:#173c42;border-color:#317e80;color:#9cf6e5}button.red{background:#4b2238;border-color:#8a3954;color:#ffccd7}button.mini{padding:7px 10px;font-size:12px}.statusline{min-height:19px;margin-top:9px;font-size:12px;color:#a4b9d9}.warn{font-size:12px;color:#ffdb9c;background:#4e371c43;border-left:3px solid #f2b25b;padding:10px 12px;border-radius:4px 12px 12px 4px;margin-top:13px}.pills{display:flex;gap:8px;flex-wrap:wrap}.pill{border-radius:30px;border:1px solid #3b5078;background:#1a2947;color:#b4c7ec;padding:5px 10px;font-size:11px;font-weight:750}.pill.active{border-color:#347f77;background:#103a37;color:#61ebce}
-.camera{position:relative;background:#080c18;border:1px solid #364765;border-radius:16px;aspect-ratio:4/3;overflow:hidden;display:grid;place-items:center}.camera video,.camera canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}.camera canvas{pointer-events:none}.camera .empty{display:grid;text-align:center;justify-items:center;gap:6px;color:#94a5c3;font-size:13px}.empty .big{font-size:42px}.empty[hidden]{display:none}.camhud{position:absolute;bottom:10px;left:10px;right:10px;display:flex;align-items:center;justify-content:space-between;gap:10px;border-radius:12px;padding:10px 12px;background:#071225cf;border:1px solid #485a7250;backdrop-filter:blur(6px)}.camhud strong{color:var(--cyan);font-size:16px}.camhud span{font-size:12px}.scanline{position:absolute;inset:0;pointer-events:none;background:linear-gradient(transparent 49%,#75eeec08 50%,transparent 51%);background-size:100% 10px;opacity:.5}
+.camera{position:relative;background:#080c18;border:1px solid #364765;border-radius:16px;aspect-ratio:4/3;overflow:hidden;display:grid;place-items:center}.camera video,.camera canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}.camera video{display:none;z-index:1}.camera video.active{display:block}.camera canvas{z-index:2}.camera canvas{pointer-events:none}.camera .empty{position:absolute;inset:0;z-index:0;display:grid;align-content:center;text-align:center;justify-items:center;gap:6px;color:#94a5c3;font-size:13px}.empty .big{font-size:42px}.empty[hidden]{display:none}.camhud{position:absolute;z-index:4;bottom:10px;left:10px;right:10px;display:flex;align-items:center;justify-content:space-between;gap:10px;border-radius:12px;padding:10px 12px;background:#071225cf;border:1px solid #485a7250;backdrop-filter:blur(6px)}.camhud strong{color:var(--cyan);font-size:16px}.camhud span{font-size:12px}.scanline{position:absolute;z-index:3;inset:0;pointer-events:none;background:linear-gradient(transparent 49%,#75eeec08 50%,transparent 51%);background-size:100% 10px;opacity:.5}
 .camsub{color:var(--muted);font-size:12px;margin-top:11px}.followstatus{margin-top:10px;color:#a7bad8;font-size:12px}.feed{display:grid;grid-template-columns:repeat(3,70px);gap:8px;justify-content:center;margin:21px 0 10px}.feed button{height:58px;padding:0;font-size:23px}.feed .stop{font-size:12px;color:#ffcbd3;background:#512438;border-color:#ac5370}.statbox{background:#081326;border:1px solid #30405f;padding:12px;border-radius:13px;margin-top:12px;display:flex;justify-content:space-between;align-items:center;gap:8px}.statbox span{font-size:12px;color:#adc0de}.statbox strong{font-size:17px;color:#6bead2;letter-spacing:.03em}.meters{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}.meter{background:#0b1529;border:1px solid #2b3d60;border-radius:12px;padding:10px}.meter b{display:block;font-size:17px}.meter span{display:block;font-size:11px;color:#8fa3c6}
 .chatlist{background:#091326;border:1px solid #2a3b5d;border-radius:14px;padding:13px;min-height:205px;max-height:270px;overflow:auto;display:flex;flex-direction:column;gap:10px}.bubble{max-width:90%;padding:9px 12px;border-radius:13px;background:#1d2c48;border:1px solid #3c527b;overflow-wrap:anywhere;align-self:flex-start}.bubble.self{background:#293c78;border-color:#5a74cf;align-self:flex-end}.bubble.system{background:#142135;border-color:#2e455f;color:#a7bad3;max-width:100%}.bubble .who{font-size:10px;font-weight:850;letter-spacing:.05em;color:#a6baff;margin-bottom:2px}.bubble .body{font-size:13px;white-space:pre-wrap}.chatrow{display:grid;grid-template-columns:1fr auto;gap:9px;margin-top:11px}.log{height:180px;overflow:auto;background:#081122;border:1px solid #2c3d5e;border-radius:14px;padding:10px 12px;color:#a0dbd3;font:12px/1.7 ui-monospace,SFMono-Regular,Consolas,monospace}.logline{border-bottom:1px solid #182440;padding:2px 0;overflow-wrap:anywhere}.footer{margin:19px 2px 0;color:#7e90ae;font-size:12px}.togrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.mode-btn.active{background:#384c8d;border-color:#93a4ff}.testresult{font-size:12px;color:#92e8d5;min-height:18px;margin-top:8px}.remember{display:flex;align-items:center;gap:8px;font-size:12px;color:#bbcae5;margin-top:12px}.remember input{width:18px;height:18px;flex:none;accent-color:#7a8bff}
 @media(max-width:820px){.layout{grid-template-columns:1fr}.span2{grid-column:auto}.hero{padding:18px}.hero b{font-size:18px}}
 @media(max-width:540px){.shell{padding:14px 12px 45px}.head{align-items:flex-start}.logo{width:47px;height:47px;border-radius:15px;font-size:25px}h1{font-size:20px}.hero{display:block;border-radius:18px}.hero .chip{margin-top:12px;display:inline-block}.panel{padding:15px;border-radius:18px}.fields{grid-template-columns:1fr}.camera{aspect-ratio:3/4}.live{padding:7px 9px;font-size:11px}.feed{grid-template-columns:repeat(3,64px)}}
 .room-grid{display:grid;grid-template-columns:1fr 1.25fr;gap:12px;margin-top:16px}.room-action{background:#0a1529;border:1px solid #2e4369;border-radius:14px;padding:13px;display:flex;flex-direction:column;justify-content:space-between;gap:8px}.room-join{display:flex;gap:9px}.room-join input{font-size:24px;letter-spacing:.24em;font-weight:800;text-align:center;min-width:0}.room-join button{white-space:nowrap}.room-display{margin-top:15px;padding:14px;border:1px solid #417b92;border-radius:14px;background:linear-gradient(90deg,#123b4a,#162346);display:flex;align-items:center;justify-content:space-between;gap:12px}.room-display[hidden]{display:none}.room-code{font-size:38px;letter-spacing:.18em;font-weight:900;font-variant-numeric:tabular-nums;color:#88f4df;line-height:1.2}@media(max-width:650px){.room-grid{grid-template-columns:1fr}.room-code{font-size:34px}}
-</style>
+.cam-diag{margin-top:9px;padding:10px 12px;border:1px solid #31496a;border-radius:12px;background:#0b172c;color:#b5c9e6;font-size:12px;overflow-wrap:anywhere}.cam-diag.error{border-color:#ba536b;color:#ffd7df;background:#38182a}.cam-diag.success{border-color:#308776;color:#a1f4db;background:#123634}#btnResumeVideo[hidden]{display:none}</style>
 </head>
 <body>
 <div class="shell">
 <header class="head">
-  <div class="identity"><div class="logo" aria-hidden="true">🤖</div><div><div class="eyebrow">robotics lab / v6.0</div><h1>EDISON <span style="color:#9bb0ff">AI</span> CONTROL</h1><div class="sub">Vision • Ably Live • Voice • Chat</div></div></div>
+  <div class="identity"><div class="logo" aria-hidden="true">🤖</div><div><div class="eyebrow">robotics lab / v7.0</div><h1>EDISON <span style="color:#9bb0ff">AI</span> CONTROL</h1><div class="sub">Vision • Ably Live • Voice • Chat</div></div></div>
   <div class="live" id="connBadge"><span class="live-dot"></span><span id="connText">Hors ligne</span></div>
 </header>
 <section class="hero"><div><b>Edison + iPhone : vision et Ably en direct.</b><p>Détecte une personne, calcule des directions et transmet les commandes à ton PC via Ably. Un seul fichier HTML, sans backend. Les roues ne sont pas reliées.</p></div><span class="chip">⚡ ZÉRO ACHAT</span></section>
@@ -45,10 +44,10 @@ button,input,select{font:inherit}button{cursor:pointer;touch-action:manipulation
 </section>
 <section class="panel">
  <div class="bar"><div><div class="small-title">02 / VISION</div><h2>Caméra & suivi d'humain</h2></div><span class="pill" id="visionPill">INACTIF</span></div>
- <div class="camera"><div class="empty" id="cameraEmpty"><span class="big">📷</span><span>Active la caméra</span><small>Images traitées sur cet appareil</small></div><video id="video" autoplay playsinline muted></video><canvas id="draw"></canvas><div class="scanline"></div><div class="camhud"><span id="targetLabel">Aucune détection</span><strong id="targetCmd">—</strong></div></div>
- <div class="actions"><button id="btnCamera" class="primary">📷 Caméra</button><button id="btnFlip">↻ Inverser</button><button id="btnCamStop">Couper</button></div>
+ <div class="camera"><div class="empty" id="cameraEmpty"><span class="big">📷</span><span>Active la caméra</span><small>Images traitées sur cet appareil</small></div><video id="video" autoplay playsinline webkit-playsinline muted disablepictureinpicture></video><canvas id="draw"></canvas><div class="scanline"></div><div class="camhud"><span id="targetLabel">Aucune détection</span><strong id="targetCmd">—</strong></div></div>
+ <div class="actions"><button id="btnCamera" class="primary" type="button">📷 Activer la caméra</button><button id="btnResumeVideo" type="button" class="green" hidden>▶ Relancer la vidéo</button><button id="btnFlip" type="button">↻ Inverser</button><button id="btnCamStop" type="button">Couper</button></div>
  <div class="actions"><button id="btnVision" class="green">🧠 Activer détection IA</button><button id="btnFollow" disabled>▶ Suis-moi OFF</button></div>
- <div class="followstatus" id="visionHelp">Ouvre le site en HTTPS pour autoriser la caméra sur iPhone. L'IA se télécharge au premier lancement.</div>
+ <div class="followstatus" id="visionHelp" role="status">La caméra peut marcher même sans salon Ably. Sur iPhone, ouvre cette page directement dans Safari en HTTPS puis appuie sur 📷.</div><div class="cam-diag" id="camDiagnostic" role="status">Vérification caméra en cours…</div>
  <div class="meters"><div class="meter"><b id="peopleCount">0</b><span>Personnes repérées</span></div><div class="meter"><b id="confidence">—</b><span>Confiance du modèle</span></div></div>
 </section>
 <section class="panel">
@@ -74,13 +73,13 @@ button,input,select{font:inherit}button{cursor:pointer;touch-action:manipulation
  <div class="statusline" id="environmentNotice"></div>
 </section>
 </main>
-<div class="footer">Edison AI Control V6 • HTTPS requis pour la caméra iPhone • Ably en ligne requis • Les images caméra restent sur cet appareil • Clé intégrée (non sécurisée en cas de partage)</div>
+<div class="footer">Edison AI Control V7 • HTTPS requis pour la caméra iPhone • Ably en ligne requis • Les images caméra restent sur cet appareil • Clé intégrée (non sécurisée en cas de partage)</div>
 </div>
 <script>
 (() => {
 'use strict';
 const el=id=>document.getElementById(id);
-const state={client:null,channel:null,role:/iPhone|iPad|iPod/i.test(navigator.userAgent)?'phone':'pc',session:'node-'+Math.random().toString(36).slice(2),seen:new Set(),demo:false,pingId:null,pingTimer:0,stream:null,facing:'environment',vision:false,model:null,running:false,loopTimer:0,follow:false,lastSent:'',lastSentAt:0,speaking:false};
+const state={client:null,channel:null,role:/iPhone|iPad|iPod/i.test(navigator.userAgent)?'phone':'pc',session:'node-'+Math.random().toString(36).slice(2),seen:new Set(),demo:false,pingId:null,pingTimer:0,stream:null,facing:'environment',vision:false,model:null,running:false,loopTimer:0,follow:false,lastSent:'',lastSentAt:0,speaking:false,cameraOp:0};
 const log=(message,bad=false)=>{const item=document.createElement('div');item.className='logline';item.style.color=bad?'#ff9ab0':'';item.textContent=new Date().toLocaleTimeString('fr-FR')+'  '+message;el('log').prepend(item);while(el('log').children.length>90)el('log').lastElementChild.remove();};
 const setBadge=(type,label)=>{el('connBadge').className='live'+(type?' '+type:'');el('connText').textContent=label;};
 const hint=s=>{el('connectionHelp').textContent=s;log(s);};
@@ -157,12 +156,132 @@ document.querySelectorAll('[data-command]').forEach(b=>b.addEventListener('click
 el('btnSend').addEventListener('click',sendChat);el('chatInput').addEventListener('keydown',e=>{if(e.key==='Enter')sendChat();});
 async function sendChat(){const text=el('chatInput').value.trim();if(!text)return;if(await send({kind:'chat',text})){bubble('MOI',text,'self');el('chatInput').value='';}}
 el('btnSpeak').addEventListener('click',()=>{state.speaking=!state.speaking;el('btnSpeak').textContent=state.speaking?'🔊 Lire les réponses IA : ON':'🔇 Lire les réponses IA : OFF';});
-function stopCamera(){if(state.stream){for(const track of state.stream.getTracks())track.stop();state.stream=null;}el('video').srcObject=null;el('cameraEmpty').hidden=false;el('visionPill').textContent='INACTIF';}
-async function openCamera(){if(!navigator.mediaDevices?.getUserMedia){const text='Caméra refusée : utilise HTTPS et autorise Safari à accéder à la caméra.';el('visionHelp').textContent=text;log('❌ '+text,true);return false;}
- try{stopCamera();state.stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:state.facing},width:{ideal:640},height:{ideal:480}},audio:false});el('video').srcObject=state.stream;await el('video').play();el('cameraEmpty').hidden=true;el('visionPill').textContent='CAMÉRA';log('📷 Caméra OK');return true;
- }catch(e){el('visionHelp').textContent='Erreur caméra : '+errorText(e);log('❌ Caméra : '+errorText(e),true);return false;}}
-el('btnCamera').addEventListener('click',openCamera);el('btnFlip').addEventListener('click',async()=>{state.facing=state.facing==='environment'?'user':'environment';const wasVision=state.vision;stopVision();if(await openCamera()&&wasVision)startVision();});el('btnCamStop').addEventListener('click',()=>{stopVision();stopCamera();});
-async function startVision(){if(state.vision)return;if(!state.stream&&!(await openCamera()))return;el('btnVision').disabled=true;el('visionHelp').textContent='Téléchargement du modèle de reconnaissance…';
+function cameraNote(message,kind=''){
+ const diag=el('camDiagnostic');diag.className='cam-diag'+(kind?' '+kind:'');diag.textContent=message;
+ el('visionHelp').textContent=message;
+ if(kind==='error')log('❌ CAMÉRA : '+message,true);
+}
+function cameraEnvironment(){
+ const sec=window.isSecureContext;
+ const topLevel=window.self===window.top;
+ const proto=location.protocol;
+ const hasApi=!!navigator.mediaDevices?.getUserMedia;
+ const pieces=[sec?'🔒 Contexte sécurisé':'⚠️ Contexte non sécurisé',topLevel?'Page ouverte directement':'Page intégrée (iframe)',hasApi?'API caméra détectée':'API caméra indisponible'];
+ if(proto==='file:')pieces.push('Fichier local : Safari peut refuser');
+ el('camDiagnostic').textContent=pieces.join(' · ');
+}
+function cameraErrorMessage(e){
+ const name=String(e?.name||'Erreur inconnue');
+ const embedded=window.self!==window.top;
+ if(name==='NotAllowedError'||name==='PermissionDeniedError'||name==='SecurityError'){
+  return 'Accès caméra refusé ('+name+'). Dans Safari, autorise la caméra pour ce site dans les réglages du site. '+(embedded?'Si la page est intégrée dans un aperçu, ouvre son URL directement dans Safari.':'Si elle est affichée dans une application, ouvre-la dans Safari.');
+ }
+ if(name==='NotFoundError'||name==='DevicesNotFoundError')return 'Aucune caméra utilisable détectée ('+name+'). Essaie ↻ Inverser et ferme les applications utilisant la caméra.';
+ if(name==='NotReadableError'||name==='TrackStartError')return 'Caméra occupée ou inaccessible ('+name+'). Ferme les autres applications caméra, puis réessaie.';
+ if(name==='OverconstrainedError')return 'Caméra incompatible avec les contraintes demandées. Une tentative sans contrainte a été essayée.';
+ if(name==='AbortError')return 'Caméra interrompue par Safari : réessaie.';
+ if(name==='InvalidStateError')return 'La page doit être active au premier plan pour utiliser la caméra.';
+ return name+' : '+errorText(e);
+}
+function stopCamera(){
+ state.cameraOp++;
+ const vid=el('video');
+ try{vid.pause();}catch(_){ }
+ if(state.stream){state.stream.getTracks().forEach(t=>t.stop());state.stream=null;}
+ vid.srcObject=null;
+ vid.classList.remove('active');
+ el('btnResumeVideo').hidden=true;
+ el('cameraEmpty').hidden=false;
+ el('visionPill').textContent='INACTIF';
+ el('visionPill').classList.remove('active');
+ el('targetLabel').textContent='Aucune détection';
+ el('targetCmd').textContent='—';
+}
+async function resumeCameraVideo(){
+ const video=el('video');
+ if(!state.stream){cameraNote('Active d’abord la caméra.','error');return false;}
+ video.muted=true;
+ video.autoplay=true;
+ video.playsInline=true;
+ video.setAttribute('playsinline','');
+ video.setAttribute('webkit-playsinline','');
+ video.setAttribute('muted','');
+ video.classList.add('active');
+ el('cameraEmpty').hidden=true;
+ // Safari peut bloquer play() après la demande de permission : on propose un second vrai clic.
+ try{
+  await Promise.race([
+   video.play(),
+   new Promise((_,reject)=>setTimeout(()=>reject(Object.assign(new Error('Safari ne démarre pas la vidéo'),{name:'TimeoutError'})),5000))
+  ]);
+  if(!video.videoWidth){
+   await Promise.race([new Promise(resolve=>{
+    video.addEventListener('loadeddata',resolve,{once:true});
+    video.addEventListener('playing',resolve,{once:true});
+   }),new Promise(resolve=>setTimeout(resolve,1800))]);
+  }
+  if(!video.videoWidth)throw Object.assign(new Error('Aucune image après la connexion'),{name:'NoVideoFrame'});
+  el('visionPill').textContent='CAMÉRA ON';
+  el('btnResumeVideo').hidden=true;
+  cameraNote('✅ Caméra active. Si tu veux la reconnaissance humaine, appuie sur « Activer détection IA ».','success');
+  log('📷 Flux caméra activé');
+  return true;
+ }catch(e){
+  el('visionPill').textContent='VIDÉO EN PAUSE';
+  el('btnResumeVideo').hidden=false;
+  cameraNote('Caméra autorisée mais lecture bloquée par Safari ('+String(e?.name||'erreur')+'). Appuie sur « ▶ Relancer la vidéo ».','error');
+  return false;
+ }
+}
+async function openCamera(){
+ const btn=el('btnCamera');btn.disabled=true;
+ stopVision();stopCamera();
+ const op=state.cameraOp;
+ try{
+  if(!window.isSecureContext){
+   cameraNote('HTTPS obligatoire pour la caméra sur iPhone : ouvre l’URL HTTPS directement dans Safari (pas un aperçu HTTP).','error');
+   return false;
+  }
+  if(!navigator.mediaDevices?.getUserMedia){
+   cameraNote('API caméra indisponible. Ouvre la page directement dans Safari avec une adresse HTTPS, pas dans un aperçu intégré.','error');
+   return false;
+  }
+  cameraNote('⏳ Autorise l’accès à la caméra si Safari te le demande…');
+  let stream;
+  try{
+   stream=await navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:{ideal:state.facing},width:{ideal:640},height:{ideal:480}}});
+  }catch(e){
+   if(['NotFoundError','OverconstrainedError','TypeError'].includes(e?.name)){
+    log('📷 Essai caméra sans contraintes : '+e.name);
+    stream=await navigator.mediaDevices.getUserMedia({audio:false,video:true});
+   }else{throw e;}
+  }
+  if(op!==state.cameraOp){stream.getTracks().forEach(t=>t.stop());return false;}
+  state.stream=stream;
+  const video=el('video');video.srcObject=stream;
+  const track=stream.getVideoTracks()[0];
+  if(track)track.addEventListener('ended',()=>{
+   if(state.stream===stream){stopVision();stopCamera();cameraNote('La caméra a été déconnectée. Réactive-la.','error');}
+  },{once:true});
+  return await resumeCameraVideo();
+ }catch(e){
+  if(op!==state.cameraOp)return false;
+  const why=cameraErrorMessage(e);
+  stopCamera();
+  cameraNote(why,'error');
+  return false;
+ }finally{btn.disabled=false;}
+}
+el('btnCamera').addEventListener('click',()=>openCamera());
+el('btnResumeVideo').addEventListener('click',()=>resumeCameraVideo());
+el('btnFlip').addEventListener('click',async()=>{
+ state.facing=state.facing==='environment'?'user':'environment';
+ const wasVision=state.vision;
+ stopVision();
+ if(await openCamera()&&wasVision)startVision();
+});
+el('btnCamStop').addEventListener('click',()=>{stopVision();stopCamera();cameraNote('Caméra coupée volontairement.');});
+async function startVision(){if(state.vision)return;if(!state.stream&&!(await openCamera()))return;if((el('video').paused||!el('video').videoWidth)&&!(await resumeCameraVideo()))return;el('btnVision').disabled=true;el('visionHelp').textContent='Téléchargement du modèle de reconnaissance…';
  try{if(!state.model){if(!window.tf)await loadScript('https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js');if(!window.cocoSsd)await loadScript('https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.3/dist/coco-ssd.min.js');state.model=await window.cocoSsd.load({base:'lite_mobilenet_v2'});}
  state.vision=true;el('visionPill').textContent='VISION ON';el('visionPill').classList.add('active');el('btnFollow').disabled=false;el('btnVision').textContent='🧠 Détection active';el('visionHelp').textContent='Modèle IA chargé. Les images restent sur ton appareil. Les commandes virtuelles peuvent passer par Ably.';log('🧠 Détection de personnes prête');detectLoop();
  }catch(e){el('visionHelp').textContent='Erreur IA : '+errorText(e);log('❌ Vision : '+errorText(e),true);}finally{el('btnVision').disabled=false;}}
@@ -178,7 +297,7 @@ async function detectLoop(){if(!state.vision||state.running)return;state.running
 el('btnVoice').addEventListener('click',()=>{const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){el('voiceInfo').textContent='Reconnaissance vocale non disponible ici (essaie Chrome ou une saisie dans le chat).';return;}try{const rec=new SR();rec.lang='fr-FR';rec.maxAlternatives=1;rec.interimResults=false;el('voiceInfo').textContent='🎙️ Je t’écoute…';rec.onresult=async e=>{const phrase=e.results[0][0].transcript;el('voiceInfo').textContent='Entendu : '+phrase;log('🎤 '+phrase);await send({kind:'chat',text:phrase});bubble('MOI (VOCAL)',phrase,'self');if(/(viens|suis.?moi|suis moi)/i.test(phrase)){if(state.vision&&!state.follow){el('btnFollow').click();}else if(!state.vision)el('voiceInfo').textContent='Active d’abord la caméra et la vision.';}if(/(arrête|arrete|stop)/i.test(phrase)){stopFollow();drive('STOP','voix');}};rec.onerror=e=>{el('voiceInfo').textContent='Micro : '+e.error;};rec.start();}catch(e){el('voiceInfo').textContent=errorText(e);}});
 el('btnClear').addEventListener('click',()=>el('log').replaceChildren());el('btnCopyLog').addEventListener('click',async()=>{const txt=el('log').innerText;try{await navigator.clipboard.writeText(txt);log('📋 Journal copié');}catch{log('Copie indisponible dans ce navigateur');}});
 document.addEventListener('visibilitychange',()=>{if(document.hidden)stopFollow();});window.addEventListener('pagehide',()=>{try{state.client?.close();}catch{}if(state.stream)state.stream.getTracks().forEach(t=>t.stop());});
-el('environmentNotice').textContent=window.isSecureContext?'🔒 HTTPS / contexte sécurisé : caméra autorisée sous réserve de permission.':'⚠️ Page non sécurisée : Safari/iPhone pourrait bloquer la caméra. Utilise un hébergement HTTPS.';
+el('environmentNotice').textContent=window.isSecureContext?'🔒 Connexion sécurisée (autorisation caméra toujours nécessaire).':'⚠️ Contexte non sécurisé : la caméra sera bloquée. Utilise HTTPS.';cameraEnvironment();
 log('Site prêt. Crée un salon à 5 chiffres ou rejoins-en un.');
 
 
