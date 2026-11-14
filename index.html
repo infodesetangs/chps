@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#080e1d">
+<meta name="description" content="Edison AI Control : caméra, vision IA, messagerie Ably et contrôle virtuel en temps réel.">
+<title>Edison AI Control · V3</title>
+<style>
+:root{color-scheme:dark;--bg:#070c19;--panel:#121b30;--line:#2b3a58;--muted:#93a5c4;--text:#f4f7ff;--blue:#647cff;--cyan:#52ebd5;--orange:#ffbf71;--red:#ff6c85}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--text);background:radial-gradient(ellipse 800px 380px at 65% -100px,#263c81 0%,transparent 72%),var(--bg);font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:14px;line-height:1.5}
+button,input,select{font:inherit}button{cursor:pointer;touch-action:manipulation;transition:background .15s,border-color .15s,transform .15s}button:active{transform:scale(.98)}button:disabled{cursor:not-allowed;opacity:.48}a{color:#a9bbff}button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #8293ff;outline-offset:2px}
+.shell{max-width:1140px;margin:0 auto;padding:20px 22px 60px}.head{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:22px}.identity{display:flex;gap:14px;align-items:center}.logo{height:57px;width:57px;border-radius:19px;display:grid;place-items:center;font-size:32px;background:linear-gradient(140deg,#4157b9,#223158);border:1px solid #5a6fcd;box-shadow:0 10px 32px #0308176b}.eyebrow{text-transform:uppercase;letter-spacing:2.3px;color:#9cafef;font-size:10px;font-weight:800}h1{font-size:24px;letter-spacing:-.7px;line-height:1.15;margin:2px 0}h2{font-size:16px;letter-spacing:-.25px;margin:0}.sub{color:var(--muted);font-size:12px}.live{display:flex;align-items:center;gap:8px;border-radius:28px;padding:10px 14px;border:1px solid var(--line);background:#162039;color:#c6d1e8;font-size:12px;font-weight:700;white-space:nowrap}.live-dot{width:9px;height:9px;border-radius:100%;background:#8c96ab}.live.connected .live-dot{background:var(--cyan);box-shadow:0 0 14px var(--cyan)}.live.connecting .live-dot{background:var(--orange);box-shadow:0 0 12px #ffbf7180}.live.error .live-dot{background:var(--red)}
+.hero{background:linear-gradient(110deg,#1d2a50,#192244 56%,#11223a);border:1px solid #354b80;border-radius:24px;padding:22px 24px;margin-bottom:17px;display:flex;justify-content:space-between;align-items:center;gap:18px}.hero b{font-size:21px;letter-spacing:-.5px}.hero p{color:#b9c8e4;font-size:13px;margin:6px 0 0;max-width:620px}.hero .chip{font-size:11px;color:#72efd8;background:#0b3737;border:1px solid #2a746c;border-radius:20px;padding:7px 10px;white-space:nowrap}
+.layout{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:15px}.panel{background:linear-gradient(160deg,#141f36,#0f182c);border:1px solid var(--line);border-radius:21px;padding:19px;min-width:0;box-shadow:0 14px 42px #02050f30}.span2{grid-column:1 / -1}.bar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:15px}.small-title{font-size:11px;letter-spacing:.15em;font-weight:850;color:#7f97c2}.label{display:block;color:#b5c3e0;font-weight:750;font-size:12px;margin:0 0 6px}.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}input,select{width:100%;border-radius:12px;background:#091124;border:1px solid #354767;padding:12px;color:#f3f6ff;min-width:0}input::placeholder{color:#7182a6}input:focus{border-color:#778aff;outline:0;box-shadow:0 0 0 3px #647cff30}.actions{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-top:14px}button{border-radius:12px;padding:11px 14px;border:1px solid #425477;color:#e9efff;background:#26334f;font-weight:750}button.primary{background:linear-gradient(120deg,#6679ff,#5268df);border-color:#8293ff;color:white}button.green{background:#173c42;border-color:#317e80;color:#9cf6e5}button.red{background:#4b2238;border-color:#8a3954;color:#ffccd7}button.mini{padding:7px 10px;font-size:12px}.statusline{min-height:19px;margin-top:9px;font-size:12px;color:#a4b9d9}.warn{font-size:12px;color:#ffdb9c;background:#4e371c43;border-left:3px solid #f2b25b;padding:10px 12px;border-radius:4px 12px 12px 4px;margin-top:13px}.pills{display:flex;gap:8px;flex-wrap:wrap}.pill{border-radius:30px;border:1px solid #3b5078;background:#1a2947;color:#b4c7ec;padding:5px 10px;font-size:11px;font-weight:750}.pill.active{border-color:#347f77;background:#103a37;color:#61ebce}
+.camera{position:relative;background:#080c18;border:1px solid #364765;border-radius:16px;aspect-ratio:4/3;overflow:hidden;display:grid;place-items:center}.camera video,.camera canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}.camera canvas{pointer-events:none}.camera .empty{display:grid;text-align:center;justify-items:center;gap:6px;color:#94a5c3;font-size:13px}.empty .big{font-size:42px}.empty[hidden]{display:none}.camhud{position:absolute;bottom:10px;left:10px;right:10px;display:flex;align-items:center;justify-content:space-between;gap:10px;border-radius:12px;padding:10px 12px;background:#071225cf;border:1px solid #485a7250;backdrop-filter:blur(6px)}.camhud strong{color:var(--cyan);font-size:16px}.camhud span{font-size:12px}.scanline{position:absolute;inset:0;pointer-events:none;background:linear-gradient(transparent 49%,#75eeec08 50%,transparent 51%);background-size:100% 10px;opacity:.5}
+.camsub{color:var(--muted);font-size:12px;margin-top:11px}.followstatus{margin-top:10px;color:#a7bad8;font-size:12px}.feed{display:grid;grid-template-columns:repeat(3,70px);gap:8px;justify-content:center;margin:21px 0 10px}.feed button{height:58px;padding:0;font-size:23px}.feed .stop{font-size:12px;color:#ffcbd3;background:#512438;border-color:#ac5370}.statbox{background:#081326;border:1px solid #30405f;padding:12px;border-radius:13px;margin-top:12px;display:flex;justify-content:space-between;align-items:center;gap:8px}.statbox span{font-size:12px;color:#adc0de}.statbox strong{font-size:17px;color:#6bead2;letter-spacing:.03em}.meters{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}.meter{background:#0b1529;border:1px solid #2b3d60;border-radius:12px;padding:10px}.meter b{display:block;font-size:17px}.meter span{display:block;font-size:11px;color:#8fa3c6}
+.chatlist{background:#091326;border:1px solid #2a3b5d;border-radius:14px;padding:13px;min-height:205px;max-height:270px;overflow:auto;display:flex;flex-direction:column;gap:10px}.bubble{max-width:90%;padding:9px 12px;border-radius:13px;background:#1d2c48;border:1px solid #3c527b;overflow-wrap:anywhere;align-self:flex-start}.bubble.self{background:#293c78;border-color:#5a74cf;align-self:flex-end}.bubble.system{background:#142135;border-color:#2e455f;color:#a7bad3;max-width:100%}.bubble .who{font-size:10px;font-weight:850;letter-spacing:.05em;color:#a6baff;margin-bottom:2px}.bubble .body{font-size:13px;white-space:pre-wrap}.chatrow{display:grid;grid-template-columns:1fr auto;gap:9px;margin-top:11px}.log{height:180px;overflow:auto;background:#081122;border:1px solid #2c3d5e;border-radius:14px;padding:10px 12px;color:#a0dbd3;font:12px/1.7 ui-monospace,SFMono-Regular,Consolas,monospace}.logline{border-bottom:1px solid #182440;padding:2px 0;overflow-wrap:anywhere}.footer{margin:19px 2px 0;color:#7e90ae;font-size:12px}.togrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.mode-btn.active{background:#384c8d;border-color:#93a4ff}.testresult{font-size:12px;color:#92e8d5;min-height:18px;margin-top:8px}
+@media(max-width:820px){.layout{grid-template-columns:1fr}.span2{grid-column:auto}.hero{padding:18px}.hero b{font-size:18px}}
+@media(max-width:540px){.shell{padding:14px 12px 45px}.head{align-items:flex-start}.logo{width:47px;height:47px;border-radius:15px;font-size:25px}h1{font-size:20px}.hero{display:block;border-radius:18px}.hero .chip{margin-top:12px;display:inline-block}.panel{padding:15px;border-radius:18px}.fields{grid-template-columns:1fr}.camera{aspect-ratio:3/4}.live{padding:7px 9px;font-size:11px}.feed{grid-template-columns:repeat(3,64px)}}
+</style>
+</head>
+<body>
+<div class="shell">
+<header class="head">
+  <div class="identity"><div class="logo" aria-hidden="true">🤖</div><div><div class="eyebrow">robotics lab / v3.0</div><h1>EDISON <span style="color:#9bb0ff">AI</span> CONTROL</h1><div class="sub">Vision • Ably Live • Voice • Chat</div></div></div>
+  <div class="live" id="connBadge"><span class="live-dot"></span><span id="connText">Hors ligne</span></div>
+</header>
+<section class="hero"><div><b>Ton iPhone devient les yeux du robot.</b><p>Détecte une personne, calcule des directions et transmet les commandes à ton PC via Ably. Version autonome du site, sans installation obligatoire.</p></div><span class="chip">⚡ ZÉRO ACHAT</span></section>
+<main class="layout">
+<section class="panel span2" aria-label="Connexion Ably">
+ <div class="bar"><div><div class="small-title">01 / CONNEXION</div><h2>Brancher iPhone ↔ PC</h2></div><span class="pill" id="sdkState">Ably à charger</span></div>
+ <div class="fields">
+   <div><label class="label" for="channelInput">Canal (le même sur les deux appareils)</label><input id="channelInput" value="edison-ai-v3" autocomplete="off" spellcheck="false" maxlength="100"></div>
+   <div><label class="label" for="keyInput">Clé Ably · nom:secret</label><input id="keyInput" type="password" placeholder="Entre ta clé ici" autocomplete="off" autocapitalize="off" spellcheck="false"></div>
+ </div>
+ <div class="actions"><button id="btnConnect" class="primary">⚡ Connecter Ably</button><button id="btnDisconnect">Déconnecter</button><button id="btnPing" class="green" disabled>📡 Tester la connexion</button><button id="btnDemo">Mode démo</button></div>
+ <div class="statusline" id="connectionHelp" role="status">La clé n'est pas incluse dans le fichier, ni enregistrée dans le navigateur.</div>
+ <div class="testresult" id="pingResult"></div>
+ <div class="warn">🔐 Ta clé Ably a été partagée dans le chat : <strong>révoque-la et utilise une nouvelle clé limitée au canal de ce projet.</strong> Un site public utilisant une clé complète côté navigateur n'est pas sécurisé, même si la clé est saisie manuellement.</div>
+</section>
+<section class="panel">
+ <div class="bar"><div><div class="small-title">02 / VISION</div><h2>Caméra & suivi d'humain</h2></div><span class="pill" id="visionPill">INACTIF</span></div>
+ <div class="camera"><div class="empty" id="cameraEmpty"><span class="big">📷</span><span>Active la caméra</span><small>Images traitées sur cet appareil</small></div><video id="video" autoplay playsinline muted></video><canvas id="draw"></canvas><div class="scanline"></div><div class="camhud"><span id="targetLabel">Aucune détection</span><strong id="targetCmd">—</strong></div></div>
+ <div class="actions"><button id="btnCamera" class="primary">📷 Caméra</button><button id="btnFlip">↻ Inverser</button><button id="btnCamStop">Couper</button></div>
+ <div class="actions"><button id="btnVision" class="green">🧠 Activer détection IA</button><button id="btnFollow" disabled>▶ Suis-moi OFF</button></div>
+ <div class="followstatus" id="visionHelp">Ouvre le site en HTTPS pour autoriser la caméra sur iPhone. L'IA se télécharge au premier lancement.</div>
+ <div class="meters"><div class="meter"><b id="peopleCount">0</b><span>Personnes repérées</span></div><div class="meter"><b id="confidence">—</b><span>Confiance du modèle</span></div></div>
+</section>
+<section class="panel">
+ <div class="bar"><div><div class="small-title">03 / CONTROL</div><h2>Console de déplacement</h2></div><span class="pill">SIMULATION</span></div>
+ <div class="togrow"><span class="sub">Cet écran :</span><button class="mini mode-btn active" data-role="phone">📱 iPhone</button><button class="mini mode-btn" data-role="pc">💻 PC</button></div>
+ <div class="feed"><div></div><button data-command="FORWARD" aria-label="Avancer">↑</button><div></div><button data-command="LEFT" aria-label="Tourner à gauche">←</button><button class="stop" data-command="STOP" aria-label="Arrêter">■ STOP</button><button data-command="RIGHT" aria-label="Tourner à droite">→</button><div></div><button data-command="BACKWARD" aria-label="Reculer">↓</button><div></div></div>
+ <div class="statbox"><span>Dernière commande reçue</span><strong id="lastCommand">AUCUNE</strong></div>
+ <div class="actions"><button id="btnVoice">🎙️ « Edison, viens ! »</button></div>
+ <div class="statusline" id="voiceInfo">Voix disponible uniquement si ton navigateur prend en charge la reconnaissance vocale.</div>
+ <div class="warn">⚠️ Les commandes sont envoyées à ton PC mais <strong>ne pilotent pas encore les roues Edison V3.</strong> Il manque toujours une liaison physique fonctionnelle vers les moteurs.</div>
+</section>
+<section class="panel">
+ <div class="bar"><div><div class="small-title">04 / MESSAGES</div><h2>Chat + agent IA optionnel</h2></div><span class="pill">ABLY CHAT</span></div>
+ <div id="chatMessages" class="chatlist" aria-live="polite"><div class="bubble system"><div class="who">EDISON LAB</div><div class="body">Connecte Ably sur les deux appareils, puis envoie un message pour vérifier que la liaison fonctionne.</div></div></div>
+ <div class="chatrow"><input id="chatInput" placeholder="Écris ton message…" maxlength="1200" autocomplete="off"><button id="btnSend" class="primary">Envoyer</button></div>
+ <div class="actions"><button id="btnSpeak" class="mini">🔊 Lire les réponses IA : OFF</button></div>
+ <div class="statusline">Une vraie IA conversationnelle nécessite un agent connecté (par ex. Ollama sur PC). Sans agent, les messages restent un chat entre appareils.</div>
+</section>
+<section class="panel">
+ <div class="bar"><div><div class="small-title">05 / DIAGNOSTIC</div><h2>Journal en direct</h2></div><button id="btnClear" class="mini">Effacer</button></div>
+ <div class="log" id="log" aria-live="polite"></div>
+ <div class="actions"><button id="btnCopyLog" class="mini">Copier les erreurs</button></div>
+ <div class="statusline" id="environmentNotice"></div>
+</section>
+</main>
+<div class="footer">Edison AI Control V3 • Publication HTTPS recommandée • Ably en ligne requis • L'image caméra n'est pas envoyée par le site • Aucune clé intégrée.</div>
+</div>
+<script>
+(() => {
+'use strict';
+const el=id=>document.getElementById(id);
+const state={client:null,channel:null,role:/iPhone|iPad|iPod/i.test(navigator.userAgent)?'phone':'pc',session:'node-'+Math.random().toString(36).slice(2),seen:new Set(),demo:false,pingId:null,pingTimer:0,stream:null,facing:'environment',vision:false,model:null,running:false,loopTimer:0,follow:false,lastSent:'',lastSentAt:0,speaking:false};
+const log=(message,bad=false)=>{const item=document.createElement('div');item.className='logline';item.style.color=bad?'#ff9ab0':'';item.textContent=new Date().toLocaleTimeString('fr-FR')+'  '+message;el('log').prepend(item);while(el('log').children.length>90)el('log').lastElementChild.remove();};
+const setBadge=(type,label)=>{el('connBadge').className='live'+(type?' '+type:'');el('connText').textContent=label;};
+const hint=s=>{el('connectionHelp').textContent=s;log(s);};
+const errorText=e=>String(e?.message||e?.reason?.message||e||'Erreur inconnue').slice(0,300);
+function bubble(who,body,kind=''){const node=document.createElement('div');node.className='bubble'+(kind?' '+kind:'');const title=document.createElement('div');title.className='who';title.textContent=who;const content=document.createElement('div');content.className='body';content.textContent=String(body).slice(0,3000);node.append(title,content);el('chatMessages').append(node);el('chatMessages').scrollTop=el('chatMessages').scrollHeight;while(el('chatMessages').children.length>65)el('chatMessages').firstElementChild.remove();}
+function updateRole(){document.querySelectorAll('.mode-btn').forEach(b=>b.classList.toggle('active',b.dataset.role===state.role));}
+document.querySelectorAll('.mode-btn').forEach(b=>b.addEventListener('click',()=>{state.role=b.dataset.role;updateRole();log('Rôle sélectionné : '+state.role);}));updateRole();
+const sdkUrl='https://cdn.ably.com/lib/ably.min-2.js';
+function loadScript(src){return new Promise((resolve,reject)=>{const existing=[...document.scripts].find(s=>s.src===src);if(existing){if(existing.dataset.loaded==='yes')return resolve();existing.addEventListener('load',resolve,{once:true});existing.addEventListener('error',()=>reject(new Error('Téléchargement bloqué: '+src)),{once:true});return;}const s=document.createElement('script');s.src=src;s.async=true;s.addEventListener('load',()=>{s.dataset.loaded='yes';resolve();},{once:true});s.addEventListener('error',()=>reject(new Error('Bibliothèque inaccessible: '+src)),{once:true});document.head.append(s);});}
+async function ensureAbly(){if(window.Ably?.Realtime)return;el('sdkState').textContent='Chargement…';await loadScript(sdkUrl);if(!window.Ably?.Realtime)throw new Error('Le SDK Ably est introuvable.');el('sdkState').textContent='SDK OK';}
+function cleanClient(){if(state.client){try{state.client.close();}catch(_){}}state.client=null;state.channel=null;state.demo=false;el('btnPing').disabled=true;clearTimeout(state.pingTimer);state.pingId=null;setBadge('','Hors ligne');}
+function uniq(){return state.session+'-'+Date.now()+'-'+Math.random().toString(36).slice(2,7);}
+function consume(message){let data=message?.data??message;if(typeof data==='string'){try{data=JSON.parse(data);}catch{return;}}if(!data||typeof data!=='object')return;
+ if(data.kind==='ping'&&data.id===state.pingId){clearTimeout(state.pingTimer);state.pingId=null;el('pingResult').textContent='✅ Ably fonctionne : le message test est revenu du serveur !';log('📡 Ping Ably validé');return;}
+ if(data.id&&state.seen.has(data.id))return;
+ if(data.id){state.seen.add(data.id);if(state.seen.size>500)state.seen.clear();}
+ if(data.kind==='chat')bubble(data.origin||'APPAREIL',data.text||'');
+ else if(data.kind==='assistant'){bubble('🤖 ASSISTANT IA',data.text||'');if(state.speaking&&'speechSynthesis' in window){const u=new SpeechSynthesisUtterance(String(data.text||'').slice(0,1000));u.lang='fr-FR';window.speechSynthesis.speak(u);}}
+ else if(data.kind==='drive'){el('lastCommand').textContent=String(data.cmd||'—');log('🚗 '+String(data.origin||'Autre appareil')+' → '+String(data.cmd||'?'));}
+ else if(data.kind==='status')log('📡 '+String(data.text||''));
+}
+async function connect(){const key=el('keyInput').value.trim(),name=el('channelInput').value.trim();
+ if(!/^[^\s:]+:[^\s:]+$/.test(key))return hint('❌ Clé Ably manquante ou incorrecte (format nom:secret).');
+ if(!name||name.length>100||/[\s]/.test(name))return hint('❌ Choisis un nom de canal sans espace.');
+ cleanClient();el('pingResult').textContent='';setBadge('connecting','Connexion…');el('btnConnect').disabled=true;
+ try{await ensureAbly();const client=new Ably.Realtime({key,clientId:state.session,echoMessages:true,autoConnect:false});state.client=client;
+ client.connection.on('connected',()=>{if(state.client===client){setBadge('connected','Connecté');el('btnPing').disabled=false;hint('✅ Connecté au canal '+name+'.');}});
+ client.connection.on('disconnected',()=>{if(state.client===client){setBadge('','Déconnecté');el('btnPing').disabled=true;log('Connexion interrompue.');}});
+ client.connection.on('suspended',()=>{if(state.client===client){setBadge('error','Suspendu');el('btnPing').disabled=true;log('Connexion suspendue.',true);}});
+ client.connection.on('failed',c=>{if(state.client===client){setBadge('error','Erreur Ably');el('btnPing').disabled=true;log('Ably : '+errorText(c.reason||'Refus de connexion'),true);}});
+ client.connection.connect();await Promise.race([client.connection.once('connected'),new Promise((_,reject)=>setTimeout(()=>reject(new Error('Délai de connexion dépassé : vérifie clé, réseau et permissions.')),14000))]);
+ if(state.client!==client)return;
+ const channel=client.channels.get(name);state.channel=channel;await channel.subscribe('edison-v3',consume);log('👂 Écoute activée sur '+name);el('keyInput').value='';
+ }catch(e){log('❌ '+errorText(e),true);el('connectionHelp').textContent=errorText(e);cleanClient();setBadge('error','Échec');}finally{el('btnConnect').disabled=false;}
+}
+async function send(payload){const data={...payload,id:uniq(),origin:state.role,ts:Date.now()};
+ if(state.demo)return true;
+ if(!state.channel||state.client?.connection.state!=='connected'){log('❌ Pas connecté : active Ably ou le mode démo.',true);return false;}
+ try{state.seen.add(data.id);await state.channel.publish('edison-v3',data);return true;}catch(e){state.seen.delete(data.id);log('❌ Échec de publication : '+errorText(e),true);return false;}
+}
+function drive(command,source='manuel'){el('lastCommand').textContent=command;log('🎮 '+command+' ['+source+']');return send({kind:'drive',cmd:command,source});}
+function stopFollow(){if(!state.follow)return;state.follow=false;el('btnFollow').textContent='▶ Suis-moi OFF';state.lastSent='';drive('STOP','suivi arrêté');}
+el('btnConnect').addEventListener('click',connect);
+el('btnDisconnect').addEventListener('click',()=>{stopFollow();cleanClient();hint('Déconnecté.');});
+el('btnDemo').addEventListener('click',()=>{cleanClient();state.demo=true;setBadge('connected','Démo locale');el('pingResult').textContent='Mode démo : aucune connexion Ably. Pour tester entre deux appareils, connecte Ably.';hint('🧪 Mode démo prêt. Chat et commandes visibles seulement sur cet écran.');});
+el('btnPing').addEventListener('click',async()=>{if(!state.channel)return;state.pingId=uniq();el('pingResult').textContent='⏳ Test aller-retour Ably…';try{await state.channel.publish('edison-v3',{kind:'ping',id:state.pingId,origin:state.role});clearTimeout(state.pingTimer);state.pingTimer=setTimeout(()=>{if(state.pingId){state.pingId=null;el('pingResult').textContent='⚠️ Message envoyé mais aucun écho reçu. Vérifie les permissions de lecture du canal.';}},5500);}catch(e){el('pingResult').textContent='❌ Ping impossible : '+errorText(e);}});
+document.querySelectorAll('[data-command]').forEach(b=>b.addEventListener('click',()=>{if(state.follow)stopFollow();drive(b.dataset.command);}));
+el('btnSend').addEventListener('click',sendChat);el('chatInput').addEventListener('keydown',e=>{if(e.key==='Enter')sendChat();});
+async function sendChat(){const text=el('chatInput').value.trim();if(!text)return;if(await send({kind:'chat',text})){bubble('MOI',text,'self');el('chatInput').value='';}}
+el('btnSpeak').addEventListener('click',()=>{state.speaking=!state.speaking;el('btnSpeak').textContent=state.speaking?'🔊 Lire les réponses IA : ON':'🔇 Lire les réponses IA : OFF';});
+function stopCamera(){if(state.stream){for(const track of state.stream.getTracks())track.stop();state.stream=null;}el('video').srcObject=null;el('cameraEmpty').hidden=false;el('visionPill').textContent='INACTIF';}
+async function openCamera(){if(!navigator.mediaDevices?.getUserMedia){const text='Caméra refusée : utilise HTTPS et autorise Safari à accéder à la caméra.';el('visionHelp').textContent=text;log('❌ '+text,true);return false;}
+ try{stopCamera();state.stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:state.facing},width:{ideal:640},height:{ideal:480}},audio:false});el('video').srcObject=state.stream;await el('video').play();el('cameraEmpty').hidden=true;el('visionPill').textContent='CAMÉRA';log('📷 Caméra OK');return true;
+ }catch(e){el('visionHelp').textContent='Erreur caméra : '+errorText(e);log('❌ Caméra : '+errorText(e),true);return false;}}
+el('btnCamera').addEventListener('click',openCamera);el('btnFlip').addEventListener('click',async()=>{state.facing=state.facing==='environment'?'user':'environment';const wasVision=state.vision;stopVision();if(await openCamera()&&wasVision)startVision();});el('btnCamStop').addEventListener('click',()=>{stopVision();stopCamera();});
+async function startVision(){if(state.vision)return;if(!state.stream&&!(await openCamera()))return;el('btnVision').disabled=true;el('visionHelp').textContent='Téléchargement du modèle de reconnaissance…';
+ try{if(!state.model){if(!window.tf)await loadScript('https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js');if(!window.cocoSsd)await loadScript('https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.3/dist/coco-ssd.min.js');state.model=await window.cocoSsd.load({base:'lite_mobilenet_v2'});}
+ state.vision=true;el('visionPill').textContent='VISION ON';el('visionPill').classList.add('active');el('btnFollow').disabled=false;el('btnVision').textContent='🧠 Détection active';el('visionHelp').textContent='Modèle IA chargé. Les images restent sur ton appareil. Les commandes virtuelles peuvent passer par Ably.';log('🧠 Détection de personnes prête');detectLoop();
+ }catch(e){el('visionHelp').textContent='Erreur IA : '+errorText(e);log('❌ Vision : '+errorText(e),true);}finally{el('btnVision').disabled=false;}}
+function stopVision(){stopFollow();state.vision=false;clearTimeout(state.loopTimer);el('btnFollow').disabled=true;el('btnVision').textContent='🧠 Activer détection IA';el('visionPill').classList.remove('active');if(el('draw').getContext('2d'))el('draw').getContext('2d').clearRect(0,0,el('draw').width,el('draw').height);}
+el('btnVision').addEventListener('click',()=>state.vision?stopVision():startVision());
+el('btnFollow').addEventListener('click',()=>{if(!state.vision)return;if(state.follow){stopFollow();return;}state.follow=true;state.lastSent='';state.lastSentAt=0;el('btnFollow').textContent='■ Suis-moi ON';log('▶ Suivi de personne ACTIVÉ — commandes virtuelles seulement');});
+async function suggestMove(cmd){if(!state.follow)return;const now=Date.now();if(cmd!==state.lastSent||now-state.lastSentAt>1600){state.lastSent=cmd;state.lastSentAt=now;await drive(cmd,'vision');}}
+async function detectLoop(){if(!state.vision||state.running)return;state.running=true;
+ try{const video=el('video');if(video.readyState>=2&&video.videoWidth>0&&video.videoHeight>0){const w=video.videoWidth,h=video.videoHeight;const boxes=await state.model.detect(video,6,.55);const people=boxes.filter(p=>p.class==='person').sort((a,b)=>b.bbox[2]*b.bbox[3]-a.bbox[2]*a.bbox[3]);const canvas=el('draw');canvas.width=w;canvas.height=h;const ctx=canvas.getContext('2d');ctx.clearRect(0,0,w,h);el('peopleCount').textContent=people.length;
+ if(people.length){for(const p of people){ctx.strokeStyle='#52ebd5';ctx.lineWidth=Math.max(3,w/180);ctx.strokeRect(...p.bbox);}const p=people[0];const [x,y,bw,bh]=p.bbox;const center=(x+bw/2)/w;const portion=bw/w;const command=center<.42?'LEFT':center>.58?'RIGHT':portion<.38?'FORWARD':'STOP';el('confidence').textContent=Math.round(p.score*100)+'%';el('targetLabel').textContent='👤 Humain détecté';el('targetCmd').textContent=command;await suggestMove(command);
+ }else{el('confidence').textContent='—';el('targetLabel').textContent='Aucune personne';el('targetCmd').textContent='STOP';await suggestMove('STOP');}
+ }}catch(e){log('❌ Analyse vidéo : '+errorText(e),true);el('visionHelp').textContent='Erreur de vision : '+errorText(e);}finally{state.running=false;if(state.vision)state.loopTimer=setTimeout(detectLoop,350);}}
+el('btnVoice').addEventListener('click',()=>{const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){el('voiceInfo').textContent='Reconnaissance vocale non disponible ici (essaie Chrome ou une saisie dans le chat).';return;}try{const rec=new SR();rec.lang='fr-FR';rec.maxAlternatives=1;rec.interimResults=false;el('voiceInfo').textContent='🎙️ Je t’écoute…';rec.onresult=async e=>{const phrase=e.results[0][0].transcript;el('voiceInfo').textContent='Entendu : '+phrase;log('🎤 '+phrase);await send({kind:'chat',text:phrase});bubble('MOI (VOCAL)',phrase,'self');if(/(viens|suis.?moi|suis moi)/i.test(phrase)){if(state.vision&&!state.follow){el('btnFollow').click();}else if(!state.vision)el('voiceInfo').textContent='Active d’abord la caméra et la vision.';}if(/(arrête|arrete|stop)/i.test(phrase)){stopFollow();drive('STOP','voix');}};rec.onerror=e=>{el('voiceInfo').textContent='Micro : '+e.error;};rec.start();}catch(e){el('voiceInfo').textContent=errorText(e);}});
+el('btnClear').addEventListener('click',()=>el('log').replaceChildren());el('btnCopyLog').addEventListener('click',async()=>{const txt=el('log').innerText;try{await navigator.clipboard.writeText(txt);log('📋 Journal copié');}catch{log('Copie indisponible dans ce navigateur');}});
+document.addEventListener('visibilitychange',()=>{if(document.hidden)stopFollow();});window.addEventListener('pagehide',()=>{try{state.client?.close();}catch{}if(state.stream)state.stream.getTracks().forEach(t=>t.stop());});
+el('environmentNotice').textContent=window.isSecureContext?'🔒 HTTPS / contexte sécurisé : caméra autorisée sous réserve de permission.':'⚠️ Page non sécurisée : Safari/iPhone pourrait bloquer la caméra. Utilise un hébergement HTTPS.';
+log('Site prêt. Connecte Ably ou teste d’abord le mode démo.');
+})();
+</script>
+</body>
+</html>
